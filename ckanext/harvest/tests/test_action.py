@@ -21,6 +21,19 @@ except ImportError:
     from ckan.new_tests import factories as ckan_factories
     from ckan.new_tests.helpers import (_get_test_app, reset_db,
                                         FunctionalTestBase)
+try:
+    from ckan.tests.helpers import assert_in
+except ImportError:
+    try:
+        from ckan.new_tests.helpers import assert_in
+    except ImportError:
+        # for ckan 2.2
+        try:
+            from nose.tools import assert_in
+        except ImportError:
+            # Python 2.6 doesn't have it
+            def assert_in(a, b, msg=None):
+                assert a in b, msg or '%r was not in %r' % (a, b)
 
 from ckan import plugins as p
 from ckan.plugins import toolkit
