@@ -38,6 +38,7 @@ log = logging.getLogger(__name__)
 
 
 def harvest_source_update(context, data_dict):
+    print "HARVEST_SOURCE_UPDATE"
     '''
     Updates an existing harvest source
 
@@ -673,6 +674,7 @@ def send_error_mail(context, source_id, status):
 
 
 def harvest_send_job_to_gather_queue(context, data_dict):
+    log.info('>>> /logic/action/update.py - 4. HARVEST_SEND_JOB_TO_GATHER_QUEUE')
     '''
     Sends a harvest job to the gather queue.
 

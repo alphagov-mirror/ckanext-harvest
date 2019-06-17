@@ -73,6 +73,7 @@ def harvest_source_create(context, data_dict):
 
 
 def harvest_job_create(context, data_dict):
+    log.info(">>> /logic/action/create.py - 2. HARVEST_JOB_CREATE")
     '''
     Creates a Harvest Job for a Harvest Source and runs it (by putting it on
     the gather queue)
@@ -159,6 +160,7 @@ def harvest_job_create_all(context, data_dict):
 
 
 def _check_for_existing_jobs(context, source_id):
+    log.info(">>> /logic/action/create.py - 3. CHECK_FOR_EXISTING_JOBS")
     '''
     Given a source id, checks if there are jobs for this source
     with status 'New' or 'Running'

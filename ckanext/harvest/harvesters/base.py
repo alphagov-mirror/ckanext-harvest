@@ -61,6 +61,7 @@ class HarvesterBase(SingletonPlugin):
     @classmethod
     def _gen_new_name(cls, title, existing_name=None,
                       append_type=None):
+        log.info('>>>/harvesters/base.py - GEN_NEW_NAME')
         '''
         Returns a 'name' for the dataset (URL friendly), based on the title.
 
@@ -78,7 +79,6 @@ class HarvesterBase(SingletonPlugin):
                             either 'number-sequence' or 'random-hex'.
         :type append_type: string
         '''
-
         # If append_type was given, use it. Otherwise, use the configured default.
         # If nothing was given and no defaults were set, use 'number-sequence'.
         if append_type:
@@ -96,6 +96,7 @@ class HarvesterBase(SingletonPlugin):
     @staticmethod
     def _ensure_name_is_unique(ideal_name, existing_name=None,
                                append_type='number-sequence'):
+        log.info('>>>/harvesters/base.py - ENSURE_NAME_IS_UNIQUE')
         '''
         Returns a dataset name based on the ideal_name, only it will be
         guaranteed to be different than all the other datasets, by adding a
@@ -146,25 +147,30 @@ class HarvesterBase(SingletonPlugin):
             # a name based on the ideal one, so there's no point changing it to
             # a different number
             return existing_name
-        elif append_type == 'number-sequence':
-            # find the next available number
-            counter = 1
-            while counter <= MAX_NUMBER_APPENDED:
-                candidate_name = \
-                    ideal_name[:PACKAGE_NAME_MAX_LENGTH-len(str(counter))] + \
-                    str(counter)
-                if candidate_name not in taken:
-                    return candidate_name
-                counter = counter + 1
-            return None
-        elif append_type == 'random-hex':
-            return ideal_name[:PACKAGE_NAME_MAX_LENGTH-APPEND_MAX_CHARS] + \
-                str(uuid.uuid4())[:APPEND_MAX_CHARS]
+        # elif append_type == 'number-sequence':
+        #     # find the next available number
+        #     counter = 1
+        #     while counter <= MAX_NUMBER_APPENDED:
+        #         candidate_name = \
+        #             ideal_name[:PACKAGE_NAME_MAX_LENGTH-len(str(counter))] + \
+        #             str(counter)
+        #         if candidate_name not in taken:
+        #             return candidate_name
+        #         counter = counter + 1
+        #     return None
+        # elif append_type == 'random-hex':
+        #     return ideal_name[:PACKAGE_NAME_MAX_LENGTH-APPEND_MAX_CHARS] + \
+        #         str(uuid.uuid4())[:APPEND_MAX_CHARS]
+        else:
+            log.info('OUR ERROR ON DUPLICATES')
+            self._save_object_error('OUR ERROR ON DUPLICATES')
+            # raise NotImplementedError('OUR ERROR ON DUPLICATES')
 
     _save_gather_error = HarvestGatherError.create
     _save_object_error = HarvestObjectError.create
 
     def _get_user_name(self):
+        log.info('>>>/harvesters/base.py - GET_USER_NAME')
         '''
         Returns the name of the user that will perform the harvesting actions
         (deleting, updating and creating datasets)
@@ -206,6 +212,7 @@ class HarvesterBase(SingletonPlugin):
         return self._user_name
 
     def _create_harvest_objects(self, remote_ids, harvest_job):
+        log.info('>>>/harvesters/base.py - CREATE_HARVEST_OBJECTS')
         '''
         Given a list of remote ids and a Harvest Job, create as many Harvest Objects and
         return a list of their ids to be passed to the fetch stage.
@@ -228,6 +235,7 @@ class HarvesterBase(SingletonPlugin):
 
     def _create_or_update_package(self, package_dict, harvest_object,
                                   package_dict_form='rest'):
+        log.info('>>>/harvesters/base.py - CREATE_OR_UPDATE_PACKAGE')
         '''
         Creates a new package or updates an existing one according to the
         package dictionary provided.
@@ -383,6 +391,7 @@ class HarvesterBase(SingletonPlugin):
         return None
 
     def _find_existing_package(self, package_dict):
+        log.info('>>>/harvesters/base.py - FIND_EXISTING_PACKAGE')
         data_dict = {'id': package_dict['id']}
         package_show_context = {'model': model, 'session': Session,
                                 'ignore_auth': True}

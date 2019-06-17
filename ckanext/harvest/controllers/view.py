@@ -60,6 +60,7 @@ class ViewController(BaseController):
             abort(401, self.not_auth_message)
 
     def refresh(self, id):
+        log.info(">>> /controllers/view.py - 1. REFRESH METHOD")
         try:
             context = {'model': model, 'user': c.user, 'session': model.Session}
             p.toolkit.get_action('harvest_job_create')(

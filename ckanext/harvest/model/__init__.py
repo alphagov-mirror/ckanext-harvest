@@ -49,6 +49,7 @@ def setup():
     if harvest_source_table is None:
         define_harvester_tables()
         log.debug('Harvest tables defined in memory')
+        log.debug('123564732571')
 
     if not model.package_table.exists():
         log.debug('Harvest table creation deferred')

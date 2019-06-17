@@ -18,6 +18,7 @@ log = logging.getLogger(__name__)
 
 
 class CKANHarvester(HarvesterBase):
+    log.debug("CKANHarvester")
     '''
     A Harvester for CKAN instances
     '''
@@ -33,7 +34,7 @@ class CKANHarvester(HarvesterBase):
         return '%s/package_search' % self._get_action_api_offset()
 
     def _get_content(self, url):
-
+        log.debug("GET_CONTENT")
         headers = {}
         api_key = self.config.get('api_key')
         if api_key:
@@ -52,6 +53,7 @@ class CKANHarvester(HarvesterBase):
         return http_request.text
 
     def _get_group(self, base_url, group):
+        log.debug("GET_GROUP")
         url = base_url + self._get_action_api_offset() + '/group_show?id=' + \
             group['id']
         try:
@@ -65,6 +67,7 @@ class CKANHarvester(HarvesterBase):
             raise RemoteResourceError('Could not fetch/decode remote group')
 
     def _get_organization(self, base_url, org_name):
+        log.debug("GET_ORGANISATION")
         url = base_url + self._get_action_api_offset() + \
             '/organization_show?id=' + org_name
         try:
@@ -77,6 +80,7 @@ class CKANHarvester(HarvesterBase):
                 'Could not fetch/decode remote organization')
 
     def _set_config(self, config_str):
+        log.debug("SET_CONFIG")
         if config_str:
             self.config = json.loads(config_str)
             if 'api_version' in self.config:
@@ -87,6 +91,7 @@ class CKANHarvester(HarvesterBase):
             self.config = {}
 
     def info(self):
+        log.debug("INFO")
         return {
             'name': 'ckan',
             'title': 'CKAN',
@@ -95,6 +100,7 @@ class CKANHarvester(HarvesterBase):
         }
 
     def validate_config(self, config):
+        log.debug("VALIDATE_CONFIG")
         if not config:
             return config
 
@@ -173,6 +179,7 @@ class CKANHarvester(HarvesterBase):
         return config
 
     def gather_stage(self, harvest_job):
+        log.debug("GATHER_STAGE")
         log.debug('In CKANHarvester gather_stage (%s)',
                   harvest_job.source.url)
         toolkit.requires_ckan_version(min_version='2.0')
@@ -284,6 +291,7 @@ class CKANHarvester(HarvesterBase):
             self._save_gather_error('%r' % e.message, harvest_job)
 
     def _search_for_datasets(self, remote_ckan_base_url, fq_terms=None):
+        log.debug("SEARCH_FOR_DATASETS")
         '''Does a dataset search on a remote CKAN and returns the results.
 
         Deals with paging to return all the results, not just the first page.
@@ -364,6 +372,7 @@ class CKANHarvester(HarvesterBase):
         return True
 
     def import_stage(self, harvest_object):
+        log.debug("IMPORT_STAGE")
         log.debug('In CKANHarvester import_stage')
 
         base_context = {'model': model, 'session': model.Session,

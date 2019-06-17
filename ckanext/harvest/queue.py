@@ -179,6 +179,7 @@ class RedisPublisher(object):
 
 
 def get_publisher(routing_key):
+    log.info('>>>queue.py - 5. GET_PUBLISHER')
     connection = get_connection()
     backend = config.get('ckan.harvest.mq.type', MQ_TYPE)
     if backend in ('amqp', 'ampq'):
