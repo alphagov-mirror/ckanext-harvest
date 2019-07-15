@@ -51,7 +51,13 @@ def run_harvest_job(job, harvester):
                 toolkit.get_action('package_show')(
                     {'ignore_auth': True},
                     dict(id=harvest_object.package_id))
+
         results_by_guid[guid]['errors'] = harvest_object.errors
+
+        # debug
+        if harvest_object.report_status != 'not modified':
+            print('***** break after single process', harvest_object.report_status)
+            break
 
     # Do 'harvest_jobs_run' to change the job status to 'finished'
     toolkit.get_action('harvest_jobs_run')({'ignore_auth': True}, {})
