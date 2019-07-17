@@ -41,6 +41,11 @@ def run_harvest_job(job, harvester):
     for obj_id in obj_ids:
         harvest_object = harvest_model.HarvestObject.get(obj_id)
         guid = harvest_object.guid
+
+        # if guid != '264a4e38-4996-4709-920b-ed585bea5d47':
+        #     print('***** skipping')
+        #     continue
+
         results_by_guid[guid] = {'obj_id': obj_id}
 
         queue.fetch_and_import_stages(harvester, harvest_object)
@@ -55,9 +60,9 @@ def run_harvest_job(job, harvester):
         results_by_guid[guid]['errors'] = harvest_object.errors
 
         # debug
-        if harvest_object.report_status != 'not modified':
-            print('***** break after single process', harvest_object.report_status)
-            break
+        # if harvest_object.report_status == 'added':
+        #     print('***** break after guid', guid)
+        #     break
 
     # Do 'harvest_jobs_run' to change the job status to 'finished'
     toolkit.get_action('harvest_jobs_run')({'ignore_auth': True}, {})
