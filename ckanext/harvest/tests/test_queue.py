@@ -1,5 +1,8 @@
 from mock import patch
-from ckantoolkit.tests.helpers import reset_db
+try:
+    from ckan.tests.helpers import reset_db
+except ImportError:
+    from ckan.new_tests.helpers import reset_db
 import ckanext.harvest.model as harvest_model
 from ckanext.harvest.model import HarvestObject, HarvestObjectExtra
 from ckanext.harvest.interfaces import IHarvester
