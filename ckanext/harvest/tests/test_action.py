@@ -5,7 +5,6 @@ from mock import patch
 from nose.tools import assert_equal, assert_raises, assert_in
 from nose.plugins.skip import SkipTest
 
-
 from ckantoolkit.tests import factories as ckan_factories
 from ckantoolkit.tests.helpers import _get_test_app, reset_db, FunctionalTestBase
 
