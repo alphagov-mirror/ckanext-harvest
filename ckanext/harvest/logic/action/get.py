@@ -124,13 +124,25 @@ def harvest_source_list(context, data_dict):
     TODO: Use package search
     '''
 
+    # could get sources based on the organisation_id passed in by request params
+    from ckan.common import request
+    log.error('*** request params %r', request.params)
+
     check_access('harvest_source_list', context, data_dict)
 
     sources = _get_sources_for_user(context, data_dict)
 
     last_job_status = p.toolkit.asbool(data_dict.get('return_last_job_status', False))
+    
+    # return [harvest_source_dictize(source, context, last_job_status) for source in sources]
 
-    return [harvest_source_dictize(source, context, last_job_status) for source in sources]
+    harvest_source_dicts = []
+    for i, source in enumerate(sources):
+        harvest_source_dicts.append(harvest_source_dictize(source, context, last_job_status))
+        log.error('*** source %r-%r', i, source)
+        # if i> 100: break
+
+    return harvest_source_dicts
 
 
 @side_effect_free
@@ -384,9 +396,18 @@ def _get_sources_for_user(context, data_dict):
                                  )
                             )
 
+    from sqlalchemy.dialects import postgresql
+
+    statement = query.statement
+    log.error(
+        '*** harvest sources %r',
+        str(statement.compile(dialect=postgresql.dialect(),compile_kwargs={"literal_binds": True}))
+    )
+
     user_obj = User.get(user)
     # Sysadmins will get all sources
     if user_obj and not user_obj.sysadmin:
+        log.error('*** harvest sources user')
         # This only applies to a non sysadmin user when using the
         # publisher auth profile. When using the default profile,
         # normal users will never arrive at this point, but even if they
