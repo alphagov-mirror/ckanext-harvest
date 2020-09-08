@@ -614,7 +614,6 @@ def harvest_jobs_run(context, data_dict):
                 now = datetime.datetime.now()
                 if now - created > datetime.timedelta(minutes=int(timeout)):
                     msg = 'Job timeout: %s is taking longer than %s minutes' % (job['id'], timeout)
-                    log.error(msg)
 
                     job_obj = HarvestJob.get(job['id'])
                     job_obj.status = u'Finished'
@@ -623,7 +622,7 @@ def harvest_jobs_run(context, data_dict):
 
                     err = HarvestGatherError(message=msg, job=job_obj)
                     err.save()
-                    log.info('Marking job as finished due to error: %s %s',
+                    log.info('Marking job as finished due to timing out: %s %s',
                             job_obj.source.url, job_obj.id)
                     continue
 
