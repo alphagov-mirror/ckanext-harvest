@@ -465,7 +465,7 @@ def fetch_callback(channel, method, header, body):
         obj.state = "ERROR"
         obj.report_status = "errored"
         obj.save()
-        log.error('Job {0} was aborted or timed out, object {1} set to error'.format(job.id, obj.id))
+        log.debug('Job {0} was aborted or timed out, object {1} set to error'.format(job.id, obj.id))
         channel.basic_ack(method.delivery_tag)
         return False
 
