@@ -239,7 +239,7 @@ def harvest_job_list(context, data_dict):
 
     query = query.order_by(HarvestJob.created.desc())
 
-    jobs = query.all()
+    jobs = query.limit(10).all()
 
     context['return_error_summary'] = False
     return [harvest_job_dictize(job, context) for job in jobs]
@@ -421,7 +421,7 @@ def _get_sources_for_user(context, data_dict, organization_id=None, limit=None):
 def harvest_get_notifications_recipients(context, data_dict):
     """ get all recipients for a harvest source
         Return a list of dicts like {'name': 'Jhon', 'email': jhon@source.com'} """
-    
+
     check_access('harvest_get_notifications_recipients', context, data_dict)
 
     source_id = data_dict['source_id']
@@ -457,5 +457,5 @@ def harvest_get_notifications_recipients(context, data_dict):
                     'name': member_details['name'],
                     'email': member_details['email']
                 })
-    
+
     return recipients
