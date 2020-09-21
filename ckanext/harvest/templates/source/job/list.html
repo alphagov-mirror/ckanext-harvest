@@ -11,6 +11,8 @@
   {% if jobs|length == 0 %}
     <p class="empty">{{ _('No jobs yet for this source') }}</p>
   {% else %}
+    <p>View the most recent 10 jobs below:</p>
+
     <ul class="dataset-list unstyled">
       {% for job in jobs %}
         <li class="dataset-item">
